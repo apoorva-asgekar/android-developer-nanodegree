@@ -48,4 +48,12 @@
 
     <!-- Value in SharedPreferences for green color option -->
     <string name="pref_color_green_value" translatable="false">green</string>
+
+    <!--Label for the edit text preference Size-->
+    <string name="pref_size_label">Size</string>
+    <!--Key for the edit text preference Size-->
+    <string name="pref_size_key" translatable="false">size</string>
+    <!--Default value of the edit text preference Size-->
+    <string name="pref_size_default" translatable="false">1</string>
+
 </resources>

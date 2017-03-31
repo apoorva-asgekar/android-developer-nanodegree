@@ -16,6 +16,10 @@
 package com.example.android.sunshine.data;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.example.android.sunshine.R;
 
 public class SunshinePreferences {
 
@@ -87,9 +91,23 @@ public class SunshinePreferences {
      * "94043,USA" if SharedPreferences have not been implemented yet.
      */
     public static String getPreferredWeatherLocation(Context context) {
-        // TODO (1) Return the user's preferred location
+        // COMPLETED (1) Return the user's preferred location
+
+        String weatherLocation = getDefaultWeatherLocation();
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(getDefaultPreferencesFileName(context), Context.MODE_PRIVATE);
+        String locationKey = context.getResources().getString(R.string.pref_location_key);
+        String locationDefault = context.getResources().getString(R.string.pref_location_default);
+        if(sharedPreferences.contains(locationKey)) {
+            weatherLocation = sharedPreferences.getString(locationKey, locationDefault);
+        }
         /** This will be implemented in a future lesson **/
-        return getDefaultWeatherLocation();
+        Log.d("SunshinePreferences", "Preferred Location: " + weatherLocation);
+        return weatherLocation;
+    }
+
+    private static String getDefaultPreferencesFileName(Context context) {
+        return context.getPackageName() + "_preferences";
     }
 
     /**
@@ -100,9 +118,16 @@ public class SunshinePreferences {
      * @return true If metric display should be used
      */
     public static boolean isMetric(Context context) {
-        // TODO (2) Return true if the user's preference for units is metric, false otherwise
+        // COMPLETED (2) Return true if the user's preference for units is metric, false otherwise
         /** This will be implemented in a future lesson **/
-        return true;
+        String prefMetrics = context.getResources().getString(R.string.pref_units_metric);
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(getDefaultPreferencesFileName(context), Context.MODE_PRIVATE);
+        String unitsKey = context.getResources().getString(R.string.pref_units_key);
+        if(sharedPreferences.getString(unitsKey, prefMetrics).equals(prefMetrics)) {
+            return true;
+        }
+        return false;
     }
 
     /**

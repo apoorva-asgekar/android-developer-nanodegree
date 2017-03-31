@@ -25,11 +25,16 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
+import android.util.Log;
 import android.widget.Toast;
+
+import java.text.NumberFormat;
+
+import static android.R.attr.value;
 
 // TODO (1) Implement OnPreferenceChangeListener
 public class SettingsFragment extends PreferenceFragmentCompat implements
-        OnSharedPreferenceChangeListener {
+        OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -49,6 +54,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
             if (!(p instanceof CheckBoxPreference)) {
                 String value = sharedPreferences.getString(p.getKey(), "");
                 setPreferenceSummary(p, value);
+            }
+            if (p instanceof EditTextPreference) {
+                p.setOnPreferenceChangeListener(this);
             }
         }
         // TODO (3) Add the OnPreferenceChangeListener specifically to the EditTextPreference
@@ -92,6 +100,28 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     // to a float; if it cannot, show a helpful error message and return false. If it can be converted
     // to a float check that that float is between 0 (exclusive) and 3 (inclusive). If it isn't, show
     // an error message and return false. If it is a valid number, return true.
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        Toast error = Toast.makeText(getContext(),
+                "Please enter number between 1 and 3 for Size", Toast.LENGTH_SHORT);
+        String newValueString = String.valueOf(newValue).trim();
+        if (newValueString.equals("")){
+            newValueString = "1";
+        }
+        try {
+            Float newValueFloat = Float.parseFloat(newValueString);
+            if(newValueFloat <= 0 || newValueFloat > 3) {
+                error.show();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            Log.e("SettingsFragment.java", "NumberFormatException in onPreferenceChange");
+            error.show();
+            return false;
+        }
+
+        return true;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

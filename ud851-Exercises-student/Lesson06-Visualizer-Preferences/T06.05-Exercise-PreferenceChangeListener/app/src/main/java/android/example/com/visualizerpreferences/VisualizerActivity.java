@@ -34,7 +34,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 // TODO (1) Implement OnSharedPreferenceChangeListener
-public class VisualizerActivity extends AppCompatActivity {
+public class VisualizerActivity extends AppCompatActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     private static final int MY_PERMISSION_RECORD_AUDIO_REQUEST_CODE = 88;
     private VisualizerView mVisualizerView;
@@ -59,6 +60,7 @@ public class VisualizerActivity extends AppCompatActivity {
         mVisualizerView.setMinSizeScale(1);
         mVisualizerView.setColor(getString(R.string.pref_color_red_value));
         // TODO (3) Register the listener
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     // TODO (2) Override the onSharedPreferenceChanged method and update the show bass preference
@@ -88,6 +90,23 @@ public class VisualizerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key == getString(R.string.pref_show_bass_key)) {
+            mVisualizerView.
+                    setShowBass(sharedPreferences.getBoolean(key,
+                            getResources().getBoolean(R.bool.pref_show_bass_default)));
+        } else if(key == getString(R.string.pref_show_treble_key)) {
+            mVisualizerView.
+                    setShowTreble(sharedPreferences.getBoolean(key,
+                            getResources().getBoolean(R.bool.pref_show_treble_default)));
+        } else if(key == getString(R.string.pref_show_mid_key)) {
+            mVisualizerView.
+                    setShowMid(sharedPreferences.getBoolean(key,
+                            getResources().getBoolean(R.bool.pref_show_mid_default)));
+        }
+    }
+
     /**
      * Below this point is code you do not need to modify; it deals with permissions
      * and starting/cleaning up the AudioInputReader
@@ -111,7 +130,14 @@ public class VisualizerActivity extends AppCompatActivity {
             mAudioInputReader.restart();
         }
     }
-    
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
     /**
      * App Permissions for Audio
      **/
