@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">PopMovies</string>
+
+    <!--Error message when no data is found-->
+    <string name="error_message">Error fetching movies! Please try again.</string>
+
+    <!--Menu item name for Settings-->
+    <string name="settings">Settings</string>
+
+    <!--List Preference Movie Sort Order labels-->
+    <string name="pref_sort_key" translatable="false">popular</string>
+    <string name="pref_sort_title">Sort movies by?</string>
+    <string name="pref_sort_popular_label">Popularity</string>
+    <string name="pref_sort_popular_value" translatable="false">popular</string>
+    <string name="pref_sort_ratings_label">Ratings</string>
+    <string name="pref_sort_ratings_value" translatable="false">ratings</string>
+
+</resources>
