@@ -25,6 +25,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import static com.example.android.todolist.data.TaskContract.TaskEntry.TABLE_NAME;
 
@@ -120,15 +121,36 @@ public class TaskContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
 
-        // TODO (1) Get access to underlying database (read-only for query)
+        // TODOCOMPLETED (1) Get access to underlying database (read-only for query)
+        final SQLiteDatabase db = mTaskDbHelper.getReadableDatabase();
 
-        // TODO (2) Write URI match code and set a variable to return a Cursor
+        // TODOCOMPLETED (2) Write URI match code and set a variable to return a Cursor
+        int match = sUriMatcher.match(uri);
+        Cursor refCursor = null;
 
-        // TODO (3) Query for the tasks directory and write a default case
+        // TODOCOMPLETED (3) Query for the tasks directory and write a default case
+        switch(match) {
+            case TASKS:
+                refCursor = db.query(TaskContract.TaskEntry.TABLE_NAME,
+                        projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case TASK_WITH_ID:
+                String id = uri.getPathSegments().get(1);
 
-        // TODO (4) Set a notification URI on the Cursor and return that Cursor
+                String mSelection = "_id=?";
+                String[] mSelectionArgs = new String[] {id};
 
-        throw new UnsupportedOperationException("Not yet implemented");
+                refCursor = db.query(TaskContract.TaskEntry.TABLE_NAME,
+                        projection, mSelection, mSelectionArgs, null, null, sortOrder);
+                break;
+            default:
+                throw new UnsupportedOperationException("Query uri not supported");
+        }
+
+        // TODOCOMPLETED (4) Set a notification URI on the Cursor and return that Cursor
+        refCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return refCursor;
     }
 
 

@@ -57,17 +57,32 @@ public class MainActivity extends AppCompatActivity {
         waitlistRecyclerView.setAdapter(mAdapter);
 
 
-        //TODO (3) Create a new ItemTouchHelper with a SimpleCallback that handles both LEFT and RIGHT swipe directions
+        //TODOCOMPLETED (3) Create a new ItemTouchHelper with a SimpleCallback that handles both LEFT and RIGHT swipe directions
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-        // TODO (4) Override onMove and simply return false inside
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                long id = (Long) viewHolder.itemView.getTag();
+                removeGuest(id);
+                mAdapter.swapCursor(getAllGuests());
+            }
+        });
 
-        // TODO (5) Override onSwiped
+        // TODOCOMPLETED (4) Override onMove and simply return false inside
 
-        // TODO (8) Inside, get the viewHolder's itemView's tag and store in a long variable id
-        // TODO (9) call removeGuest and pass through that id
-        // TODO (10) call swapCursor on mAdapter passing in getAllGuests() as the argument
+        // TODOCOMPLETED (5) Override onSwiped
 
-        //TODO (11) attach the ItemTouchHelper to the waitlistRecyclerView
+        // TODOCOMPLETED (8) Inside, get the viewHolder's itemView's tag and store in a long variable id
+        // TODOCOMPLETED (9) call removeGuest and pass through that id
+        // TODOCOMPLETED (10) call swapCursor on mAdapter passing in getAllGuests() as the argument
+
+        //TODOCOMPLETED (11) attach the ItemTouchHelper to the waitlistRecyclerView
+        itemTouchHelper.attachToRecyclerView(waitlistRecyclerView);
 
     }
 
@@ -136,9 +151,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // TODO (1) Create a new function called removeGuest that takes long id as input and returns a boolean
+    // TODOCOMPLETED (1) Create a new function called removeGuest that takes long id as input and returns a boolean
+    private boolean removeGuest(long id) {
+        return (mDb.delete(WaitlistContract.WaitlistEntry.TABLE_NAME,
+                WaitlistContract.WaitlistEntry._ID + "=" + id,
+                null) > 0);
+    }
 
-    // TODO (2) Inside, call mDb.delete to pass in the TABLE_NAME and the condition that WaitlistEntry._ID equals id
+    // TODOCOMPLETED (2) Inside, call mDb.delete to pass in the TABLE_NAME and the condition that WaitlistEntry._ID equals id
 
 
 }

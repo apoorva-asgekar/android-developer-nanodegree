@@ -56,7 +56,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public void onBindViewHolder(MovieAdapter.MovieAdapterViewHolder holder, int position) {
         String moviePosterLink = mListOfMovies.get(position).getPosterLink();
         String completePosterLink = MovieJsonUtils.getCompletePosterLink(moviePosterLink);
-        Picasso.with(mContext).load(completePosterLink).into(holder.mMoviePoster);
+        Picasso.with(mContext)
+                .load(completePosterLink)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.error)
+                .into(holder.mMoviePoster);
     }
 
     @Override
