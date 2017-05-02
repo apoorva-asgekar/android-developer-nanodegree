@@ -18,7 +18,9 @@ package com.example.android.sunshine.data;
 import android.annotation.TargetApi;
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -34,21 +36,37 @@ import android.support.annotation.NonNull;
  */
 public class WeatherProvider extends ContentProvider {
 
-//  TODO (5) Create static constant integer values named CODE_WEATHER & CODE_WEATHER_WITH_DATE to identify the URIs this ContentProvider can handle
+//  TODOCOMPLETED (5) Create static constant integer values named CODE_WEATHER & CODE_WEATHER_WITH_DATE to identify the URIs this ContentProvider can handle
+    public final static int CODE_WEATHER = 100;
+    public final static int CODE_WEATHER_WITH_DATE = 101;
 
-//  TODO (7) Instantiate a static UriMatcher using the buildUriMatcher method
+//  TODOCOMPLETED (7) Instantiate a static UriMatcher using the buildUriMatcher method
+    private final static UriMatcher sUriMatcher = buildUriMatcher();
 
     WeatherDbHelper mOpenHelper;
 
-//  TODO (6) Write a method called buildUriMatcher where you match URI's to their numeric ID
+//  TODOCOMPLETED (6) Write a method called buildUriMatcher where you match URI's to their numeric ID
 
-//  TODO (1) Implement onCreate
+    public static UriMatcher buildUriMatcher() {
+
+        UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+        uriMatcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_WEATHER,
+                CODE_WEATHER);
+        uriMatcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_WEATHER + "/#",
+                CODE_WEATHER_WITH_DATE);
+
+        return uriMatcher;
+    }
+
+//  TODOCOMPLETED (1) Implement onCreate
     @Override
     public boolean onCreate() {
-//      TODO (2) Within onCreate, instantiate our mOpenHelper
+//      TODOCOMPLETED (2) Within onCreate, instantiate our mOpenHelper
+        mOpenHelper = new WeatherDbHelper(getContext());
 
-//      TODO (3) Return true from onCreate to signify success performing setup
-        return false;
+//      TODOCOMPLETED (3) Return true from onCreate to signify success performing setup
+        return true;
     }
 
     /**
@@ -69,7 +87,7 @@ public class WeatherProvider extends ContentProvider {
         throw new RuntimeException("Student, you need to implement the bulkInsert mehtod!");
     }
 
-//  TODO (8) Provide an implementation for the query method
+//  TODOCOMPLETED (8) Provide an implementation for the query method
     /**
      * Handles query requests from clients. We will use this method in Sunshine to query for all
      * of our weather data as well as to query for the weather on a particular day.
@@ -88,11 +106,34 @@ public class WeatherProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        throw new RuntimeException("Student, implement the query method!");
+        final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 
-//      TODO (9) Handle queries on both the weather and weather with date URI
+        int match = sUriMatcher.match(uri);
 
-//      TODO (10) Call setNotificationUri on the cursor and then return the cursor
+        Cursor refCursor = null;
+//      TODOCOMPLETED (9) Handle queries on both the weather and weather with date URI
+        switch(match) {
+            case CODE_WEATHER:
+                refCursor = db.query(WeatherContract.WeatherEntry.TABLE_NAME, projection, selection,
+                        selectionArgs, null, null, sortOrder);
+                break;
+            case CODE_WEATHER_WITH_DATE:
+                String date = uri.getPathSegments().get(1);
+
+                String mSelection = WeatherContract.WeatherEntry.COLUMN_DATE + "=?";
+                String[] mSelectionArgs = new String[] {date};
+
+                refCursor = db.query(WeatherContract.WeatherEntry.TABLE_NAME, projection,
+                        mSelection, mSelectionArgs, null, null, sortOrder);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unrecognized Uri");
+        }
+
+//      TODOCOMPLETED (10) Call setNotificationUri on the cursor and then return the cursor
+        refCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return refCursor;
     }
 
     /**
