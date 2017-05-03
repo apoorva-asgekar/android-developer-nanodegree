@@ -17,6 +17,7 @@ package com.example.android.background.sync;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -31,6 +32,7 @@ public class WaterReminderIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String action = intent.getAction();
+        Log.v("WaterRem IntentService", "Action: " + action);
         ReminderTasks.executeTask(this, action);
     }
 }
