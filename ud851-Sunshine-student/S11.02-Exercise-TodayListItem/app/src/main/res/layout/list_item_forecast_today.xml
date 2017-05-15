@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/day"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="16dp"
+        tools:text="Today, December 9"
+        android:textSize="16sp"/>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:srcCompat="@drawable/ic_cloudy"
+        android:id="@+id/weatherImage"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/day"
+        android:layout_marginStart="64dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="64dp"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/weatherDescription"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/weatherImage"
+        android:layout_marginStart="64dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="64dp"
+        tools:text="Light snow"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/maxTemp"
+        tools:text="15"
+        android:textSize="48sp"
+        android:gravity="center"
+        tools:layout_editor_absoluteY="67dp"
+        tools:layout_editor_absoluteX="240dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/minTemp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/maxTemp"
+        android:layout_marginEnd="88dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="88dp"
+        tools:text="12"
+        android:textSize="24sp" />
+</android.support.constraint.ConstraintLayout>

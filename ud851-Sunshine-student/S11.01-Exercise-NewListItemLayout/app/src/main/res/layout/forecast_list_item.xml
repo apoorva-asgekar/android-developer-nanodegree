@@ -14,28 +14,89 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<!-- TODO (2) Remove the old layout -->
-<!-- TODO (3) Use ConstraintLayout to create the new list item layout -->
-<LinearLayout
+<!-- TODOCOMPLETED (2) Remove the old layout -->
+<!-- TODOCOMPLETED (3) Use ConstraintLayout to create the new list item layout -->
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <!-- This TextView holds the weather data for one particular day in the forecast -->
     <TextView
-        android:id="@+id/tv_weather_data"
-        style="@style/TextAppearance.AppCompat.Large"
+        android:id="@+id/tv_day"
+        style="@style/TextAppearance.AppCompat.Small"
+        tools:text="Today"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"/>
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_forecast"
+        style="@style/TextAppearance.AppCompat.Small"
+        tools:text="Light rain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_day"
+        app:layout_constraintTop_toBottomOf="@+id/tv_day" />
+
+    <TextView
+        android:id="@+id/tv_min_temp"
+        style="@style/TextAppearance.AppCompat.Large"
+        tools:text="18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintRight_toLeftOf="@+id/tv_max_temp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_max_temp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp" />
+
+    <TextView
+        android:id="@+id/tv_max_temp"
+        style="@style/TextAppearance.AppCompat.Large"
+        tools:text="23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="32dp" />
 
     <!-- This View serves as a visual divider between list items -->
     <View
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="#dadada"/>
+        android:background="#dadada"
+        app:layout_constraintTop_toBottomOf="@+id/tv_forecast"
+        app:layout_goneMarginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/view"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="1.0" />
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_cloudy"
+        android:id="@+id/imageView"
+        android:contentDescription="Depicts the image describing the weather forecast."
+        android:layout_marginStart="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view" />
+
+</android.support.constraint.ConstraintLayout>

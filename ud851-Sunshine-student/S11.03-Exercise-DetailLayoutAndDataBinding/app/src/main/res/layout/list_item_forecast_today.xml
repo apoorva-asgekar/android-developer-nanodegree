@@ -19,7 +19,7 @@
   - This layout displays today's primary weather information, such as the date, an icon and      -
   - description, and the high and low temperature.                                               -
   -                                                                                              -
-  - Although this layout is very similar to primary_weather_info.xml, we decided to create two   -
+  - Although this layout is very similar to primary_info decided to create two   -
   - different layouts for simplicity. The differences are that in this layout, we add additional -
   - padding to the top and bottom of the root layout and we have a background that changes color -
   - depending on whether or not it is being touched. These can be set programmatically in Java,  -
