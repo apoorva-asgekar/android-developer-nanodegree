@@ -87,14 +87,14 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <com.example.xyzreader.ui.ObservableScrollView
                 android:id="@+id/scrollview"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.example.xyzreader.ui.MaxWidthLinearLayout
@@ -103,7 +103,8 @@
                     android:background="#fff"
                     android:elevation="2dp"
                     android:maxWidth="@dimen/detail_card_max_width"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal">
 
                     <TextView
                         android:id="@+id/article_body"

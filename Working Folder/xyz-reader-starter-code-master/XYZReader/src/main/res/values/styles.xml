@@ -64,10 +64,6 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="MaxWidthLinearLayoutGravity">
-        <item name="android:layout_gravity">left</item>
-    </style>
-
     <style name="ToolbarLinearLayoutGravity">
         <item name="android:gravity">left</item>
     </style>
