@@ -11,7 +11,8 @@
     <style name="ToolbarTitle" parent="@style/TextAppearance.AppCompat.Large">
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:lineSpacingMultiplier">0.9</item>
-        <item name="android:paddingBottom">@dimen/detail_metabar_title_bottom_padding</item>
+        <item name="android:paddingTop">@dimen/detail_metabar_title_vert_padding</item>
+        <item name="android:paddingBottom">@dimen/detail_metabar_title_vert_padding</item>
         <item name="android:textColor">#fff</item>
         <item name="android:textSize">@dimen/detail_title_text_size</item>
         <item name="android:textStyle">bold</item>

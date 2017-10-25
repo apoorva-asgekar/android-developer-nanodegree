@@ -10,5 +10,5 @@
     <!-- detail -->
     <dimen name="detail_photo_height">224dp</dimen>
     <dimen name="detail_up_margin_top">16dp</dimen>
-    <dimen name="detail_meta_bar_left_margin">32dp</dimen>
+    <dimen name="detail_meta_bar_left_margin">56dp</dimen>
 </resources>

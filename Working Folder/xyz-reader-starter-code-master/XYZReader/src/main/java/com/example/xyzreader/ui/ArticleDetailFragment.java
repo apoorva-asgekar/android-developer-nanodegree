@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.AppBarLayout;
@@ -92,6 +93,10 @@ public class ArticleDetailFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().startPostponedEnterTransition();
+        }
+
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
@@ -142,7 +147,7 @@ public class ArticleDetailFragment extends Fragment implements
         });
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
-        //mBackgroundView = (ImageView) mRootView.findViewById(R.id.background_image);
+        mBackgroundView = (ImageView) mRootView.findViewById(R.id.background_image);
         mFragCollapsingToolbarLayout =
                 ((CollapsingToolbarLayout) mRootView.findViewById(
                         R.id.detail_collapsing_toolbar_layout));
@@ -158,11 +163,11 @@ public class ArticleDetailFragment extends Fragment implements
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    //mBackgroundView.setVisibility(View.VISIBLE);
+                    mBackgroundView.setVisibility(View.VISIBLE);
                     isShow = true;
                 } else if(isShow) {
                     isShow = false;
-                    //mBackgroundView.setVisibility(View.INVISIBLE);
+                    mBackgroundView.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -273,7 +278,7 @@ public class ArticleDetailFragment extends Fragment implements
                                 mPhotoView.setImageBitmap(imageContainer.getBitmap());
                                 //mRootView.findViewById(R.id.meta_bar)
                                 //        .setBackgroundColor(mMutedColor);
-                                //mBackgroundView.setImageBitmap(bitmap);
+                                mBackgroundView.setImageBitmap(bitmap);
                                 updateStatusBar();
                             }
                         }
