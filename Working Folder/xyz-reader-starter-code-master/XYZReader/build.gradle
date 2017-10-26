@@ -1,35 +1,28 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
-    }
-}
-apply plugin: 'com.android.application'
 
-repositories {
-    mavenCentral()
-}
-
-android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
-
-    defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 25
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
-dependencies {
-    compile "com.android.support:design:$androidSupportVersion"
-    compile "com.android.support:support-v4:$androidSupportVersion"
-    compile "com.android.support:support-v13:$androidSupportVersion"
-    compile "com.android.support:appcompat-v7:$androidSupportVersion"
-    compile "com.android.support:palette-v7:$androidSupportVersion"
-    compile "com.android.support:recyclerview-v7:$androidSupportVersion"
-    compile "com.android.support:cardview-v7:$androidSupportVersion"
-    compile 'com.squareup.okhttp3:okhttp:3.1.2'
-    compile files('libs/volley.jar')
+allprojects {
+    repositories {
+        jcenter()
+    }
+
+    ext {
+        androidSupportVersion = "25.3.1"
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
