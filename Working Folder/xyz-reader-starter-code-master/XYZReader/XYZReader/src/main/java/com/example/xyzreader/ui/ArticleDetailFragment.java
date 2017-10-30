@@ -1,7 +1,9 @@
 package com.example.xyzreader.ui;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -20,6 +22,8 @@ import java.util.GregorianCalendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ShareCompat;
@@ -50,6 +54,7 @@ public class ArticleDetailFragment extends Fragment implements
     private static final String TAG = "ArticleDetailFragment";
 
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_POSITION = "position";
     private static final float PARALLAX_FACTOR = 1.25f;
 
     private Cursor mCursor;
@@ -69,6 +74,8 @@ public class ArticleDetailFragment extends Fragment implements
     private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
 
+    private Activity mActivity;
+
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
@@ -82,9 +89,10 @@ public class ArticleDetailFragment extends Fragment implements
     public ArticleDetailFragment() {
     }
 
-    public static ArticleDetailFragment newInstance(long itemId) {
+    public static ArticleDetailFragment newInstance(long itemId, int position) {
         Bundle arguments = new Bundle();
         arguments.putLong(ARG_ITEM_ID, itemId);
+        arguments.putInt(ARG_POSITION, position);
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         fragment.setArguments(arguments);
         return fragment;
@@ -145,7 +153,12 @@ public class ArticleDetailFragment extends Fragment implements
         });
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
-        //scheduleStartPostponedTransition(mPhotoView);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (getArguments().containsKey(ARG_POSITION)) {
+                mPhotoView.setTransitionName(getString(R.string.transition_name) +
+                        getArguments().getInt(ARG_POSITION));
+            }
+        }
 
         mBackgroundView = (ImageView) mRootView.findViewById(R.id.background_image);
         mFragCollapsingToolbarLayout =
@@ -186,39 +199,15 @@ public class ArticleDetailFragment extends Fragment implements
 
         bindViews();
         updateStatusBar();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getActivity().startPostponedEnterTransition();
-        }
         return mRootView;
     }
 
-    /**
-     * Schedules the shared element transition to be started immediately
-     * after the shared element has been measured and laid out within the
-     * activity's view hierarchy. Some common places where it might make
-     * sense to call this method are:
-     * <p>
-     * (1) Inside a Fragment's onCreateView() method (if the shared element
-     * lives inside a Fragment hosted by the called Activity).
-     * <p>
-     * (2) Inside a Picasso Callback object (if you need to wait for Picasso to
-     * asynchronously load/scale a bitmap before the transition can begin).
-     * <p>
-     * (3) Inside a LoaderCallback's onLoadFinished() method (if the shared
-     * element depends on data queried by a Loader).
-     */
-    private void scheduleStartPostponedTransition(final View sharedElement) {
-        sharedElement.getViewTreeObserver().addOnPreDrawListener(
-                new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            getActivity().startPostponedEnterTransition();
-                        }
-                        return true;
-                    }
-                });
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().startPostponedEnterTransition();
+        }
     }
 
     private void updateStatusBar() {
@@ -367,5 +356,26 @@ public class ArticleDetailFragment extends Fragment implements
         return mIsCard
                 ? (int) mPhotoContainerView.getTranslationY() + mPhotoView.getHeight() - mScrollY
                 : mPhotoView.getHeight() - mScrollY;
+    }
+
+    /**
+     * Returns the shared element that should be transitioned back to the previous Activity,
+     * or null if the view is not visible on the screen.
+     */
+    @Nullable
+    ImageView getPhotoViewDetail() {
+        if (isViewInBounds(getActivity().getWindow().getDecorView(), mPhotoView)) {
+            return mPhotoView;
+        }
+        return null;
+    }
+
+    /**
+     * Returns true if {@param view} is contained within {@param container}'s bounds.
+     */
+    private static boolean isViewInBounds(@NonNull View container, @NonNull View view) {
+        Rect containerBounds = new Rect();
+        container.getHitRect(containerBounds);
+        return view.getLocalVisibleRect(containerBounds);
     }
 }

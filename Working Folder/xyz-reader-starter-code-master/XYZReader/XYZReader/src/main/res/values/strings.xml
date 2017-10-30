@@ -9,4 +9,6 @@
 
     <string name="up">Up</string>
 
+    <string name="transition_name">shared_image</string>
+
 </resources>

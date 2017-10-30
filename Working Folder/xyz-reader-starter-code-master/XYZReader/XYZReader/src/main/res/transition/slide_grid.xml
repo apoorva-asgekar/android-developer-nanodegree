@@ -2,6 +2,6 @@
 <slide xmlns:android="http://schemas.android.com/apk/res/android"
     android:slideEdge="bottom">
     <targets>
-        <target android:targetId="@id/article_body"/>
+        <target android:targetId="@id/recycler_view"/>
     </targets>
-    </slide>
+</slide>
