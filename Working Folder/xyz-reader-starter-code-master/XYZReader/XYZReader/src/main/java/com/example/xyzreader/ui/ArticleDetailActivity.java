@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.R.attr.data;
+import static android.R.attr.fragment;
 
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
@@ -146,7 +147,7 @@ public class ArticleDetailActivity extends ActionBarActivity
         mUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                supportFinishAfterTransition();
+                finishAfterTransition();
             }
         });
 
@@ -187,7 +188,7 @@ public class ArticleDetailActivity extends ActionBarActivity
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                supportFinishAfterTransition();
+                finishAfterTransition();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -195,7 +196,6 @@ public class ArticleDetailActivity extends ActionBarActivity
 
     @Override
     public void finishAfterTransition() {
-        super.finishAfterTransition();
         mIsReturning = true;
         Intent data = new Intent();
         Log.d("ArticleDetailActivity", "StartingPosition: " + mStartingPosition);
@@ -203,6 +203,8 @@ public class ArticleDetailActivity extends ActionBarActivity
         data.putExtra("StartingPosition", mStartingPosition);
         data.putExtra("CurrentPosition", mCurrentPosition);
         setResult(RESULT_OK, data);
+        super.finishAfterTransition();
+        //finish();
     }
 
     @Override
@@ -252,9 +254,9 @@ public class ArticleDetailActivity extends ActionBarActivity
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
-            ArticleDetailFragment fragment = (ArticleDetailFragment) object;
-            if (fragment != null) {
-                mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
+            mCurrentDetailsFragment = (ArticleDetailFragment) object;
+            if (mCurrentDetailsFragment != null) {
+                mSelectedItemUpButtonFloor = mCurrentDetailsFragment.getUpButtonFloor();
                 updateUpButtonPosition();
             }
         }
